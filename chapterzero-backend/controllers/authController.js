@@ -81,7 +81,17 @@ const loginUser = async (req, res) => {
     }
 };
 
-module.exports = {
-    registerUser,
-    loginUser
+
+// @desc    Get all users (Admin Only)
+// @route   GET /api/auth/users
+const getAllUsers = async (req, res) => {
+    try {
+        const users = await User.find({}).select('-password'); // Don't send passwords!
+        res.status(200).json({ success: true, data: users });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
 };
+
+// Add it to your exports
+module.exports = { registerUser, loginUser, getAllUsers };  
